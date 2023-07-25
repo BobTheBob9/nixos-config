@@ -1,7 +1,9 @@
 { config, pkgs, inputs, ... }:
-let lunarvimpkg = pkgs.callPackage ./custom/lunarvim.nix {};
-in
 {
+  imports = [
+    ./plasma_config.nix
+  ];
+
   nixpkgs.config.allowUnfreePredicate = _: true;
 
   # Home Manager needs a bit of information about you and the paths it should
@@ -46,7 +48,6 @@ in
     pkgs.gamemode
     pkgs.lutris
 
-    lunarvimpkg
     pkgs.yakuake
     pkgs.btop
     pkgs.aseprite
@@ -71,6 +72,7 @@ in
         image-search-options
 
         betterttv
+        # TODO: need more ttv extensions, no adblock or 7tv!
       ];
     };
 
