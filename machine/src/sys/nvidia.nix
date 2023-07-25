@@ -12,6 +12,6 @@
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
 
-  environment.variables.WLR_NO_HARDWARE_CURSORS = "1";
+  #environment.variables.WLR_NO_HARDWARE_CURSORS = "1";
 }
 
