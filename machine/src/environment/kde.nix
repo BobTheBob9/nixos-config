@@ -7,6 +7,8 @@
   services.xserver.displayManager.defaultSession = "plasmawayland";
   services.xserver.desktopManager.plasma5.enable = true;
 
+  # services.xserver.desktopManager.plasma5.bigscreen.enable = true;
+
   environment.systemPackages = with pkgs; [
     # rar support for kde dolphin/ark
     rar
