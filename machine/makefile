@@ -21,13 +21,13 @@ build_machine:
 	cp -r src/* .build/
 	cd .build; sh ../make_machine_config.sh
 
-install_switch: install
+install: preinstall
 	cd .build; nixos-rebuild switch
 
-install_test: install
+install_test: preinstall
 	cd .build; nixos-rebuild test
 
-install: clean_nixos_rebuild_result
+preinstall: clean_nixos_rebuild_result
 	rm -r /etc/nixos/* || true
 	rm -r .build/result || true
 	cp -r .build/* /etc/nixos/

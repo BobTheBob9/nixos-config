@@ -10,6 +10,9 @@
   # services.xserver.desktopManager.plasma5.bigscreen.enable = true;
 
   environment.systemPackages = with pkgs; [
+    # mount stuff like networked storage as a filesystem driver
+    kio-fuse 
+
     # rar support for kde dolphin/ark
     rar
     unrar

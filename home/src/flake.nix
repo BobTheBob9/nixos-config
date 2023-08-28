@@ -3,7 +3,7 @@
 
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/23.05";
-    
+
         nur.url = "github:nix-community/NUR";
 
         home-manager.url = "github:nix-community/home-manager";
@@ -41,4 +41,5 @@
             # to pass through arguments to home.nix
             extraSpecialArgs = { inherit inputs; };
         };
+    };
 }

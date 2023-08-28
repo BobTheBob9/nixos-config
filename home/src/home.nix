@@ -42,11 +42,8 @@
 
         # games - utilities
         pkgs.protonup-ng
-        pkgs.wineWowPackages.waylandFull
+        pkgs.wineWowPackages.unstableFull
         pkgs.gamescope
-        pkgs.mangohud
-        pkgs.gamemode
-        pkgs.lutris
 
         pkgs.yakuake
         pkgs.btop
@@ -101,15 +98,6 @@
         enable = true;
         userName = "BobTheBob9";
         userEmail = "for.oliver.kirkham@gmail.com";
-    };
-
-    programs.vscode = {
-        enable = true;
-        extensions = with pkgs.vscode-extensions; [
-            ms-vscode.cpptools
-            llvm-vs-code-extensions.vscode-clangd
-            ms-vscode.cmake-tools
-        ];
     };
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
