@@ -22,10 +22,10 @@ build_machine:
 	cd .build; sh ../make_machine_config.sh
 
 install: preinstall
-	cd .build; nixos-rebuild switch
+	cd .build; nixos-rebuild switch --impure
 
 install_test: preinstall
-	cd .build; nixos-rebuild test
+	cd .build; nixos-rebuild test --impure
 
 preinstall: clean_nixos_rebuild_result
 	rm -r /etc/nixos/* || true

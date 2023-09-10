@@ -27,10 +27,16 @@
         # communication software
         pkgs.discord
         pkgs.slack
+
+        # tools
         pkgs.parsec-bin
         pkgs.obs-studio
-
         pkgs.qbittorrent
+        pkgs.kate
+        pkgs.vlc
+        pkgs.libreoffice
+        pkgs.aseprite
+        pkgs.gimp
 
         # games
         pkgs.osu-lazer-bin
@@ -41,17 +47,13 @@
         pkgs.yuzu-ea
 
         # games - utilities
-        pkgs.protonup-ng
+        pkgs.protonup-ng # TODO: should declaratively manage
         pkgs.wineWowPackages.unstableFull
+        #inputs.nix-gaming.packages.${pkgs.system}.wine-ge # this sucks i think
         pkgs.gamescope
 
         pkgs.yakuake
         pkgs.btop
-        pkgs.aseprite
-        pkgs.gimp
-
-        pkgs.vlc
-        pkgs.libreoffice
     ];
 
     programs.firefox = {
@@ -98,6 +100,32 @@
         enable = true;
         userName = "BobTheBob9";
         userEmail = "for.oliver.kirkham@gmail.com";
+    };
+
+    # shortcuts
+    xdg.desktopEntries = {
+        "Titanium Dev" = {
+            name = "Titanium Dev";
+            exec = "konsole -e nix develop";
+            icon = "system-run";
+            settings.Path = "~/repos/titanium";
+        };
+
+        "Titanfall 2" = {
+            name = "Titanfall 2";
+            exec = "env WINEPREFIX=\"/mnt/funny-largentfs/wineprefixes/ea\" wine Z:/mnt/fastgames/origin/titanfall/Titanfall2/Titanfall2.exe";
+            icon = "/mnt/fastgames/origin/titanfall/Titanfall2/Titanfall2.ico";
+            settings.Categories = "Game";
+            settings.Path = "/mnt/funny-largentfs/wineprefixes/ea/dosdevices/z:/mnt/fastgames/origin/titanfall/Titanfall2/";
+        };
+
+        "R5Reloaded" = {
+            name = "R5Reloaded";
+            exec = "env WINEPREFIX=\"/mnt/funny-largentfs/wineprefixes/ea\" wine Z:/mnt/funny-largentfs/r5reloaded/launcher.exe";
+            icon = "/mnt/funny-largentfs/r5reloaded/launcher.exe_14_101.ico";
+            settings.Categories = "Game";
+            settings.Path = "/mnt/funny-largentfs/wineprefixes/ea/dosdevices/z:/mnt/funny-largentfs/r5reloaded/";
+        };
     };
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage

@@ -6,6 +6,8 @@
 
         nur.url = "github:nix-community/NUR";
 
+        nix-gaming.url = "github:fufexan/nix-gaming";
+
         home-manager.url = "github:nix-community/home-manager";
         home-manager.inputs.nixpkgs.follows = "nixpkgs";
 

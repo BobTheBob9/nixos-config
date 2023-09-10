@@ -7,20 +7,28 @@
 
     outputs = inputs:
         let
-            system = "x86_64-linux";
             username = "bobthebob";
-            pkgs = import inputs.nixpkgs
-            {
-                inherit system;
-                allowUnfree = true;
-            };
+            system = "x86_64-linux";
         in
         {
             nixosConfigurations = {
-                nixos = inputs.nixpkgs.lib.nixosSystem {
+                nixos = inputs.nixpkgs.lib.nixosSystem
+                {
                     system = system;
-                    modules = [ ./configuration.nix ];
                     specialArgs = { inherit inputs; };
+                    modules = [ ./configuration.nix ];
+                };
+
+                nixos-iso = inputs.nixpkgs.lib.nixosSystem
+                {
+                    system = system;
+                    specialArgs = { inherit inputs; };
+                    modules = [
+                        ./configuration.nix
+                        "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+                    ];
+
+                    isoImage.squashfsCompression = "gzip -Xcompression-level 1";
                 };
             };
         };
