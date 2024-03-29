@@ -15,6 +15,7 @@ export LOCALE_ENGLAND := 1
 export SOUND_PIPEWIRE := 1
 export NETWORKING := 1
 export SSH_SERVER := 0
+export SMB_SERVER := 0
 
 build_machine: 
 	mkdir -p .build

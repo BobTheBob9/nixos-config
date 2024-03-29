@@ -1,9 +1,5 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, pkgs-unstable, ... }:
 {
-    imports = [
-        ./plasma_config.nix
-    ];
-
     nixpkgs.config.allowUnfreePredicate = _: true;
 
     # Home Manager needs a bit of information about you and the paths it should
@@ -20,37 +16,44 @@
     # release notes.
     home.stateVersion = "22.11"; # Please read the comment before changing.
 
+
+
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages =
     [
         # communication software
         pkgs.discord
-        pkgs.slack
+        pkgs.konversation
 
         # tools
-        pkgs.parsec-bin
         pkgs.obs-studio
         pkgs.qbittorrent
         pkgs.kate
         pkgs.vlc
-        pkgs.libreoffice
         pkgs.aseprite
-        pkgs.gimp
+        pkgs.krita
 
         # games
-        pkgs.osu-lazer-bin
-        pkgs.prismlauncher
-    
+        #pkgs.osu-lazer-bin
+        pkgs-unstable.prismlauncher
+        pkgs-unstable.ironwail
+        #inputs.ssbm.packages.x86_64-linux.slippi-launcher
+        inputs.aagl.packages.x86_64-linux.anime-game-launcher
+
         # games - emulators
         pkgs.dolphin-emu
-        pkgs.yuzu-ea
+        pkgs-unstable.yuzu-early-access
+        pkgs.snes9x-gtk
+        pkgs.citra
+        pkgs.desmume
+        pkgs.cemu
 
         # games - utilities
         pkgs.protonup-ng # TODO: should declaratively manage
         pkgs.wineWowPackages.unstableFull
         #inputs.nix-gaming.packages.${pkgs.system}.wine-ge # this sucks i think
-        pkgs.gamescope
+        #pkgs.gamescope
 
         pkgs.yakuake
         pkgs.btop
@@ -58,7 +61,6 @@
 
     programs.firefox = {
         enable = true;
-
         profiles.bobthebob = {
             extensions = with pkgs.nur.repos.rycee.firefox-addons; [
                 plasma-integration
@@ -70,13 +72,13 @@
                 translate-web-pages
                 image-search-options
 
-                betterttv
+                # betterttv
                 # TODO: need more ttv extensions, no adblock or 7tv!
-        ];
-    };
+            ];
+        };
 
-    package = pkgs.firefox-wayland.override { 
-        extraPolicies = {
+        package = pkgs.firefox-wayland.override {
+            extraPolicies = {
                 CaptivePortal = false;
                 DisableFirefoxStudies = true;
                 DisablePocket = true;
@@ -113,19 +115,45 @@
 
         "Titanfall 2" = {
             name = "Titanfall 2";
-            exec = "env WINEPREFIX=\"/mnt/funny-largentfs/wineprefixes/ea\" wine Z:/mnt/fastgames/origin/titanfall/Titanfall2/Titanfall2.exe";
+            exec = "env WINEPREFIX=/home/bobthebob/.wine wine Z:/mnt/fastgames/origin/titanfall/Titanfall2/Titanfall2.exe";
             icon = "/mnt/fastgames/origin/titanfall/Titanfall2/Titanfall2.ico";
             settings.Categories = "Game";
-            settings.Path = "/mnt/funny-largentfs/wineprefixes/ea/dosdevices/z:/mnt/fastgames/origin/titanfall/Titanfall2/";
+            settings.Path = "/home/bobthebob/.wine/dosdevices/z:/mnt/fastgames/origin/titanfall/Titanfall2/";
         };
 
         "R5Reloaded" = {
             name = "R5Reloaded";
-            exec = "env WINEPREFIX=\"/mnt/funny-largentfs/wineprefixes/ea\" wine Z:/mnt/funny-largentfs/r5reloaded/launcher.exe";
+            exec = "env WINEPREFIX=/home/bobthebob/.wine wine Z:/mnt/funny-largentfs/r5reloaded/launcher.exe";
             icon = "/mnt/funny-largentfs/r5reloaded/launcher.exe_14_101.ico";
             settings.Categories = "Game";
-            settings.Path = "/mnt/funny-largentfs/wineprefixes/ea/dosdevices/z:/mnt/funny-largentfs/r5reloaded/";
+            settings.Path = "/home/bobthebob/.wine/dosdevices/z:/mnt/funny-largentfs/r5reloaded/";
         };
+
+        "Minecraft PC Gamer Demo" = {
+            name = "Minecraft PC Gamer Demo";
+            exec = "prismlauncher --launch b1.3_01";
+            icon = "/home/bobthebob/.local/share/PrismLauncher/instances/b1.3_01/icon.png";
+            settings.Categories = "Game";
+        };
+        "Minecraft Reindev" = {
+            name = "Minecraft Reindev";
+            exec = "prismlauncher --launch Reindev";
+            icon = "/home/bobthebob/.local/share/PrismLauncher/instances/Reindev/icon.png";
+            settings.Categories = "Game";
+        };
+        "Minecraft 1.12.2" = {
+            name = "Minecraft 1.12.2";
+            exec = "prismlauncher --launch 1.12.2";
+            icon = "/home/bobthebob/.local/share/PrismLauncher/instances/1.12.2/icon.png";
+            settings.Categories = "Game";
+        };
+        "Minecraft Feed the Factory" = {
+            name = "Minecraft Feed the Factory";
+            exec = "prismlauncher --launch \"Feed the Factory\"";
+            icon = "/home/bobthebob/.local/share/PrismLauncher/instances/Feed the Factory/icon.png";
+            settings.Categories = "Game";
+        };
+
     };
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage

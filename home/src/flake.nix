@@ -2,13 +2,16 @@
     description = "bobthebob's home manager configuration";
 
     inputs = {
-        nixpkgs.url = "github:nixos/nixpkgs/23.05";
+        nixpkgs.url = "github:nixos/nixpkgs/23.11";
+        nixpkgs-unstable.url = "github:nixos/nixpkgs";
 
         nur.url = "github:nix-community/NUR";
 
         nix-gaming.url = "github:fufexan/nix-gaming";
+        ssbm.url = "github:djanatyn/ssbm-nix";
+        aagl.url = "github:ezKEa/aagl-gtk-on-nix";
 
-        home-manager.url = "github:nix-community/home-manager";
+        home-manager.url = "github:nix-community/home-manager/release-23.11";
         home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
         plasma-manager.url = "github:pjones/plasma-manager";
@@ -29,19 +32,19 @@
         in
         {
             homeConfigurations.${username} = inputs.home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
+                inherit pkgs;	
 
-            # Specify your home configuration modules here, for example,
-            # the path to your home.nix.
-            modules = [
-                ./home.nix
+                # Specify your home configuration modules here, for example,
+                # the path to your home.nix.
+                modules = [
+                    ./home.nix
 
-                inputs.plasma-manager.homeManagerModules.plasma-manager
-            ];
+                    inputs.plasma-manager.homeManagerModules.plasma-manager
+                ];
 
-            # Optionally use extraSpecialArgs
-            # to pass through arguments to home.nix
-            extraSpecialArgs = { inherit inputs; };
+                # Optionally use extraSpecialArgs
+                # to pass through arguments to home.nix
+                extraSpecialArgs = { inherit inputs; pkgs-unstable = import inputs.nixpkgs-unstable { system = "x86_64-linux"; }; };
+            };
         };
-    };
 }

@@ -32,6 +32,11 @@ then
     echo -e "\t\t./sys/ssh_server.nix" >> configuration.nix
 fi
 
+if [ "$SMB_SERVER" == "1" ]
+then
+    echo -e "\t\t./sys/samba.nix" >> configuration.nix
+fi
+
 if [ "$LOCALE_ENGLAND" == "1" ]
 then
     echo -e "\t\t./sys/locale_england.nix" >> configuration.nix
