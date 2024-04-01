@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-unstable, pkgs-waylandFlameshot, ... }:
+{ config, pkgs, pkgs-unstable, pkgs-waylandFlameshot, nix-gaming, ... }:
 {
     imports = [
         # Include the results of the hardware scan.
@@ -100,7 +100,7 @@
         # games - utilities
         protonup-ng # TODO: should declaratively manage
         wineWowPackages.unstableFull
-        #inputs.nix-gaming.packages.${pkgs.system}.wine-ge # this sucks i think
+        nix-gaming.wine-tkg # this sucks i think
         #pkgs.gamescope
 
         yakuake
@@ -122,30 +122,6 @@
     programs.firefox.policies.FirefoxHome = { Pocket = false; Snippets = false; TopSites = false; Highlights = false; };
     programs.firefox.policies.UserMessaging = { ExtensionRecommendations = false; SkipOnboarding = true; };
     programs.firefox.policies.EnableTrackingProtection = { Value = true; Locked = true; Cryptomining = true; Fingerprinting = true; };
-    # TODO: could pin to specific version?
-    #programs.firefox.policies.Extensions = {
-    #    "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
-    #    "uBlock Origin" = {
-    #        install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-    #        installation_mode = "force_installed";
-    #    };
-    #    "SponsorBlock" = {
-    #        install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
-    #        installation_mode = "force_installed";
-    #    };
-    #    "Youtube Shorts Block" = {
-    #        install_url = "https://addons.mozilla.org/firefox/downloads/latest/youtube-shorts-block/latest.xpi";
-    #        installation_mode = "force_installed";
-    #    };
-    #    "Image Search Options" = {
-    #        install_url = "https://addons.mozilla.org/firefox/downloads/latest/image-search-options/latest.xpi";
-    #        installation_mode = "force_installed";
-    #    };
-    #    "Translate Webpages" = {
-    #        install_url = "https://addons.mozilla.org/firefox/downloads/latest/translate-web-pages/latest.xpi";
-    #        installation_mode = "force_installed";
-    #    };
-    #};
     programs.firefox.policies.Extensions.Install = [
         "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
         "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi"
