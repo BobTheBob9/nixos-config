@@ -21,7 +21,7 @@
                     specialArgs = {
                                     pkgs-unstable = import inputs.nixpkgs-unstable { system = system; };
                                     pkgs-waylandFlameshot = import inputs.pkgs-waylandFlameshot { system = system; };
-                                    nix-gaming = import inputs.nix-gaming { system = system; };
+                                    nix-gaming = inputs.nix-gaming;
                                 };
                     modules = [ ./configuration.nix ];
                 };

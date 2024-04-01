@@ -52,6 +52,8 @@
     environment.systemPackages = with pkgs; [
         # kde stuff
         # mount stuff like networked storage as a filesystem driver
+        # TODO: kind of sucks, gnome's functionality for this is about 100x better but don't like using gnome
+        # honestly, when i move off kde i'll probably just have something commandline to mount these
         kio-fuse
         plasma5Packages.kio-extras
 
@@ -100,7 +102,8 @@
         # games - utilities
         protonup-ng # TODO: should declaratively manage
         wineWowPackages.unstableFull
-        nix-gaming.wine-tkg # this sucks i think
+        #nix-gaming.wine-jhgjghge # this sucks i think
+        nix-gaming.packages.${pkgs.hostPlatform.system}.wine-ge
         #pkgs.gamescope
 
         yakuake
@@ -130,13 +133,11 @@
         "https://addons.mozilla.org/firefox/downloads/latest/translate-web-pages/latest.xpi"
     ];
 
-
     programs.firefox.preferences = {
         "widget.use-xdg-desktop-portal.file-picker" = true;
         "extensions.pocket.enabled" = false;
         "extensions.screenshots.disabled" = true;
     };
-
 
     environment.sessionVariables = {
         NIXOS_OZONE_WL = "1";
