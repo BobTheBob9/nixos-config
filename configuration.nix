@@ -65,8 +65,9 @@
         pkgs-waylandFlameshot.flameshot
         xdg-desktop-portal
         xdg-desktop-portal-kde
+	wl-clipboard
 
-        neovim
+        #neovim
         wget
         git
         neofetch
@@ -101,14 +102,24 @@
 
         # games - utilities
         protonup-ng # TODO: should declaratively manage
-        wineWowPackages.unstableFull
-        #nix-gaming.wine-jhgjghge # this sucks i think
+        #wineWowPackages.unstableFull
         nix-gaming.packages.${pkgs.hostPlatform.system}.wine-ge
         #pkgs.gamescope
 
         yakuake
         btop
+
+	kitty
+    	(neovim.override {
+            configure = {
+                packages.plugins = with pkgs.vimPlugins; {
+        	     start = [ barbar-nvim ];
+	        };
+	    };
+        })
     ];
+
+    programs.river.enable = true;
 
     programs.steam.enable = true;
     programs.steam.remotePlay.openFirewall = true;
@@ -142,6 +153,7 @@
     environment.sessionVariables = {
         NIXOS_OZONE_WL = "1";
         MOZ_ENABLE_WAYLAND = "1";
+	KITTY_CONFIG_DIRECTORY = ./config/kitty;
     };
 
     # This value determines the NixOS release from which the default
