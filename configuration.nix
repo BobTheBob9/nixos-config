@@ -109,7 +109,16 @@
         yakuake
         btop
 
-	kitty
+	# we wrap kitty to specify env vars rather than doing it with environment.sessionVars because the latter requires a relog to reset after rebuilding, whereas this will update as soon as we rebuild our config
+	(pkgs.symlinkJoin {
+	    name = "kitty";
+	    paths = [ pkgs.kitty ];
+	    buildInputs = [ pkgs.makeWrapper ];
+	    postBuild = ''
+		wrapProgram $out/bin/kitty \
+		    --prefix KITTY_CONFIG_DIRECTORY "${./config/kitty/kitty.conf}"
+		'';
+	})
     	(neovim.override {
             configure = {
                 packages.plugins = with pkgs.vimPlugins; {
@@ -153,7 +162,6 @@
     environment.sessionVariables = {
         NIXOS_OZONE_WL = "1";
         MOZ_ENABLE_WAYLAND = "1";
-	KITTY_CONFIG_DIRECTORY = ./config/kitty;
     };
 
     # This value determines the NixOS release from which the default
