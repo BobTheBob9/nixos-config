@@ -113,10 +113,10 @@
 	(pkgs.symlinkJoin {
 	    name = "kitty";
 	    paths = [ pkgs.kitty ];
-	    buildInputs = [ pkgs.makeWrapper ];
+	    nativeBuildInputs = [ pkgs.makeWrapper ];
 	    postBuild = ''
 		wrapProgram $out/bin/kitty \
-		    --prefix KITTY_CONFIG_DIRECTORY "${./ext-config/kitty/kitty.conf}"
+		    --set KITTY_CONFIG_DIRECTORY "${./ext/kitty}"
 		'';
 	})
     	(neovim.override {
@@ -126,6 +126,7 @@
 	        };
 	    };
         })
+	(pkgs.writeShellScriptBin "dev" ( builtins.readFile ./ext/dev.sh ))
     ];
 
     programs.river.enable = true;
