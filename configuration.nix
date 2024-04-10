@@ -116,7 +116,7 @@
 	    buildInputs = [ pkgs.makeWrapper ];
 	    postBuild = ''
 		wrapProgram $out/bin/kitty \
-		    --prefix KITTY_CONFIG_DIRECTORY "${./config/kitty/kitty.conf}"
+		    --prefix KITTY_CONFIG_DIRECTORY "${./ext-config/kitty/kitty.conf}"
 		'';
 	})
     	(neovim.override {
