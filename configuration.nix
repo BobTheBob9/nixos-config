@@ -83,6 +83,7 @@
         vlc
         aseprite
         krita
+	furnace
 
         # games
         #pkgs.osu-lazer-bin
@@ -101,9 +102,25 @@
 
         # games - utilities
         protonup-ng # TODO: should declaratively manage
-	# both of these packages output the "wine" executable, but we want them to have their own, so rename them
-	(writeShellScriptBin "wine" ''${wineWowPackages.unstableFull}/bin/wine "$@"'')
-        (writeShellScriptBin "wine-ge" ''${nix-gaming.packages.${pkgs.hostPlatform.system}.wine-ge}/bin/wine "$@"'')
+	wineWowPackages.unstableFull
+	# wine-ge tries to create executables all using the same name as vanilla wine, so we need to prefix all of them with ge-
+	(pkgs.runCommand "wine-ge" {
+		buildInputs = [ nix-gaming.packages.${pkgs.hostPlatform.system}.wine-ge ];
+	} ''
+		mkdir $out
+
+		ln -s ${nix-gaming.packages.${pkgs.hostPlatform.system}.wine-ge}/* $out
+		rm $out/bin
+		
+		mkdir $out/bin
+		for filename in ${nix-gaming.packages.${pkgs.hostPlatform.system}.wine-ge}/bin/* 
+		do
+			ln -s $filename "$out/bin/ge-$(basename $filename)"
+		done
+		
+	'')
+
+
         #pkgs.gamescope
 
         yakuake
@@ -119,7 +136,7 @@
 		    --set KITTY_CONFIG_DIRECTORY "${./ext/kitty}"
 		'';
 	})
-	(pkgs.writeShellScriptBin "dev" ( builtins.readFile ./ext/dev.sh ))
+	(writeShellScriptBin "dev" ( builtins.readFile ./ext/dev.sh ))
     ];
 
     programs.neovim.enable = true;
