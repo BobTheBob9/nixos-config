@@ -102,15 +102,16 @@
 
         # games - utilities
         protonup-ng # TODO: should declaratively manage
-        #wineWowPackages.unstableFull
-        nix-gaming.packages.${pkgs.hostPlatform.system}.wine-ge
+	# both of these packages output the "wine" executable, but we want them to have their own, so rename them
+	(writeShellScriptBin "wine" ''${wineWowPackages.unstableFull}/bin/wine "$@"'')
+        (writeShellScriptBin "wine-ge" ''${nix-gaming.packages.${pkgs.hostPlatform.system}.wine-ge}/bin/wine "$@"'')
         #pkgs.gamescope
 
         yakuake
         btop
 
 	# we wrap kitty to specify env vars rather than doing it with environment.sessionVars because the latter requires a relog to reset after rebuilding, whereas this will update as soon as we rebuild our config
-	(pkgs.symlinkJoin {
+	(symlinkJoin {
 	    name = "kitty";
 	    paths = [ pkgs.kitty ];
 	    nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -122,11 +123,15 @@
     	(neovim.override {
             configure = {
                 packages.plugins = with pkgs.vimPlugins; {
-        	     start = [ barbar-nvim ];
+        	     start = [ nvim-web-devicons barbar-nvim ];
 	        };
 	    };
         })
 	(pkgs.writeShellScriptBin "dev" ( builtins.readFile ./ext/dev.sh ))
+    ];
+
+    fonts.packages = with pkgs; [
+	(nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; }) # for nvim-web-devicons
     ];
 
     programs.river.enable = true;
