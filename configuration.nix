@@ -2,7 +2,6 @@
 {
     imports = [
         # Include the results of the hardware scan.
-        # TODO: this should probably be part of the makefile
         ./hardware-configuration.nix
         ./hardware-configuration-custom.nix
 
@@ -120,15 +119,14 @@
 		    --set KITTY_CONFIG_DIRECTORY "${./ext/kitty}"
 		'';
 	})
-    	(neovim.override {
-            configure = {
-                packages.plugins = with pkgs.vimPlugins; {
-        	     start = [ nvim-web-devicons barbar-nvim ];
-	        };
-	    };
-        })
 	(pkgs.writeShellScriptBin "dev" ( builtins.readFile ./ext/dev.sh ))
     ];
+
+    programs.neovim.enable = true;
+    programs.neovim.configure.packages.myVimPackage = with pkgs.vimPlugins; {
+	start = [ nvim-web-devicons barbar-nvim ];
+    };
+    programs.neovim.configure.customRC = ( builtins.readFile ./ext/nvim.vim );
 
     fonts.packages = with pkgs; [
 	(nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; }) # for nvim-web-devicons
