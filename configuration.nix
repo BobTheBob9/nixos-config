@@ -136,13 +136,14 @@
 
 	# allow pegasus to be configured by nix
 	# this very slightly sucks balls because it will affect all programs launched by pegasus, bleh
+	# theoretically it's possible to launch pegasus in "portable mode", which makes it read from a local config folder instead of XDG_CONFIG_HOME, might be possible to abuse that here
 	(symlinkJoin {
 	    name = "pegasus-fe";
 	    paths = [ pkgs.pegasus-frontend ];
 	    nativeBuildInputs = [ pkgs.makeWrapper ];
 	    postBuild = ''
 		wrapProgram $out/bin/pegasus-fe \
-		    --set XDG_CONFIG_HOME "${./ext}"
+		    --set XDG_CONFIG_HOME ${./ext}
 
 		# ensure .desktop file generated points to the wrapped executable
 		sed -i /Exec/c\Exec=$out/bin/pegasus-fe $out/share/applications/org.pegasus_frontend.Pegasus.desktop
