@@ -66,7 +66,6 @@
         xdg-desktop-portal-kde
 	wl-clipboard
 
-        #neovim
         wget
         git
         neofetch
@@ -120,9 +119,6 @@
 		
 	'')
 
-
-        #pkgs.gamescope
-
         yakuake
         btop
 
@@ -137,6 +133,23 @@
 		'';
 	})
 	(writeShellScriptBin "dev" ( builtins.readFile ./ext/dev.sh ))
+
+	# allow pegasus to be configured by nix
+	# this very slightly sucks balls because it will affect all programs launched by pegasus, bleh
+	(symlinkJoin {
+	    name = "pegasus-fe";
+	    paths = [ pkgs.pegasus-frontend ];
+	    nativeBuildInputs = [ pkgs.makeWrapper ];
+	    postBuild = ''
+		wrapProgram $out/bin/pegasus-fe \
+		    --set XDG_CONFIG_HOME "${./ext}"
+
+		# ensure .desktop file generated points to the wrapped executable
+		sed -i /Exec/c\Exec=$out/bin/pegasus-fe $out/share/applications/org.pegasus_frontend.Pegasus.desktop
+	    	'';
+	})
+
+	# (pkgs.callPackage ./temp-bforartists.nix {})
     ];
 
     programs.neovim.enable = true;
@@ -149,7 +162,13 @@
 	(nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; }) # for nvim-web-devicons
     ];
 
-    programs.river.enable = true;
+    # prototyping my "game carts on pc" thing
+    # ideally, this should mount the drive, then as the logged on user, run a script to mount the drive, read a json file to determine how to run the game, then run it
+    # so for a steam game, it'd launch steam, tell it to mount the steam library on the disk containing the game, then launch the game
+    # ( to be clear, it does not work! )
+    services.udev.extraRules = ''
+	ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="partition", RUN+="${pkgs.su} bobthebob -c '${./ext/udev_test.sh} %E{DEVNAME}'"
+    '';
 
     programs.steam.enable = true;
     programs.steam.remotePlay.openFirewall = true;

@@ -1,0 +1,4 @@
+collection: Super Nintendo Entertainment System
+shortname: snes
+extension: sfc
+launch: snes9x-gtk {file.path}
