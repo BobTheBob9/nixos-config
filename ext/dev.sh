@@ -4,7 +4,7 @@ if [ -e ~/.cache/nvim/server$(basename $(tty)).pipe ]
 then
 	# using just nvim, rather than kitten @ launch here seems to spew some garbage into stdin for whatever reason
 	kitten @ launch nvim --server ~/.cache/nvim/server$(basename $(tty)).pipe --remote-tab-silent $(realpath $1)
-	kitten @ next_window
+	kitten @ next_window # doesn't work :c
 else
 	kitten @ launch nvim --listen ~/.cache/nvim/server$(basename $(tty)).pipe $(realpath $1)
 fi

@@ -93,6 +93,7 @@
 
         # games - emulators
         dolphin-emu
+	( pkgs.callPackage ./slippi.nix {} )
         yuzu-early-access
         snes9x-gtk
         citra
@@ -128,26 +129,25 @@
 	    paths = [ pkgs.kitty ];
 	    nativeBuildInputs = [ pkgs.makeWrapper ];
 	    postBuild = ''
-		wrapProgram $out/bin/kitty \
-		    --set KITTY_CONFIG_DIRECTORY "${./ext/kitty}"
-		'';
+		wrapProgram $out/bin/kitty --set KITTY_CONFIG_DIRECTORY "${./ext/kitty}"
+	    '';
 	})
 	(writeShellScriptBin "dev" ( builtins.readFile ./ext/dev.sh ))
-
+	(writeShellScriptBin "scratch" ( builtins.readFile ./ext/scratch.sh ) )
 	# allow pegasus to be configured by nix
-	# this very slightly sucks balls because it will affect all programs launched by pegasus, bleh
-	# theoretically it's possible to launch pegasus in "portable mode", which makes it read from a local config folder instead of XDG_CONFIG_HOME, might be possible to abuse that here
+	# this very slightly sucks balls because it will also affect all programs launched by pegasus, bleh
+	# theoretically it's possible to launch pegasus in "portable mode", which makes it read from a local config folder instead of XDG_CONFIG_HOME, might be possible to abuse that here, but i haven't been able to figure out a way to symlink or copy a config folder to $out/bin
+	# idk, maybe this isn't even necessarily a bad thing since it does make all the emulator configs declarative which is nice, unsure
+	# also apparently snes9x-gtk just fucking crashes if the config is readonly, cool!
 	(symlinkJoin {
 	    name = "pegasus-fe";
 	    paths = [ pkgs.pegasus-frontend ];
 	    nativeBuildInputs = [ pkgs.makeWrapper ];
 	    postBuild = ''
-		wrapProgram $out/bin/pegasus-fe \
-		    --set XDG_CONFIG_HOME ${./ext}
-
+		wrapProgram $out/bin/pegasus-fe --set XDG_CONFIG_HOME ${./ext}
 		# ensure .desktop file generated points to the wrapped executable
 		sed -i /Exec/c\Exec=$out/bin/pegasus-fe $out/share/applications/org.pegasus_frontend.Pegasus.desktop
-	    	'';
+	    '';
 	})
 
 	# (pkgs.callPackage ./temp-bforartists.nix {})
@@ -199,6 +199,11 @@
         "extensions.pocket.enabled" = false;
         "extensions.screenshots.disabled" = true;
     };
+
+    services.printing.enable = true;
+    services.avahi.enable =  true;
+    services.avahi.nssmdns = true;
+    services.avahi.openFirewall = true;
 
     environment.sessionVariables = {
         NIXOS_OZONE_WL = "1";
